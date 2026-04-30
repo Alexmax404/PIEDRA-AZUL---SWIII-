@@ -1,0 +1,4 @@
+*.db
+*.trace.db
+*.lock.db
+piedraAzul-back/keycloak/data/
