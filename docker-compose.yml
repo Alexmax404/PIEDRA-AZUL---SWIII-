@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
 
   keycloak:
@@ -11,7 +13,12 @@ services:
     volumes:
       - ./piedraAzul-back/keycloak:/opt/keycloak/data/import
       - ./piedraAzul-back/keycloak/data:/opt/keycloak/data/h2
-    command: start-dev --import-realm
+    command: start-dev --import-realm --health-enabled=true
+    healthcheck:
+      test: [ "CMD-SHELL", "echo > /dev/tcp/localhost/8080" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   backend:
     build: ./piedraAzul-back
@@ -25,7 +32,8 @@ services:
       KEYCLOAK_ADMIN_USERNAME: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     depends_on:
-      - keycloak
+      keycloak:
+        condition: service_healthy
     restart: on-failure
 
   frontend:
