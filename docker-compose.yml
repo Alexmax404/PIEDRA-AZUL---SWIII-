@@ -27,3 +27,19 @@ services:
     depends_on:
       - keycloak
     restart: on-failure
+
+  frontend:
+    build:
+      context: ./piedraAzul-front-vue
+      args:
+        VITE_API_URL: http://localhost:8080/api
+        VITE_KEYCLOAK_URL: http://localhost:8180
+        VITE_KEYCLOAK_REALM: piedrazul
+        VITE_KEYCLOAK_CLIENT: piedrazul-api
+        VITE_KEYCLOAK_SECRET: lU5PljMWMfq0sM9rTIJeNFgjvYVHGQDa
+    container_name: frontend-piedrazul
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+      - keycloak

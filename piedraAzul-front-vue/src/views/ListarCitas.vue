@@ -24,7 +24,8 @@
 
         <AppCampo label="Fecha" tipo="date" v-model="fecha" ayuda="Día que desea consultar" />
 
-        <div class="campo" style="justify-content:flex-end;">
+        <!-- ✦ clase campo-boton agregada -->
+        <div class="campo campo-boton">
           <label>&nbsp;</label>
           <AppButton @click="buscar" :loading="cargando">
             <svg width="15" height="15" fill="none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="white" stroke-width="2"/><path d="M20 20l-3-3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
@@ -114,27 +115,27 @@ import { citaService } from '../services/api.js'
 const { medicos, formatEsp } = useMedicos()
 const { toast }              = useToast()
 
-const medicoId    = ref('')
-const fecha       = ref(new Date().toISOString().split('T')[0])
-const citas       = ref([])
-const estado      = ref('')       // '' | 'cargando' | 'ok' | 'error'
+const medicoId     = ref('')
+const fecha        = ref(new Date().toISOString().split('T')[0])
+const citas        = ref([])
+const estado       = ref('')        // '' | 'cargando' | 'ok' | 'error'
 const mensajeError = ref('')
-const cargando    = ref(false)
-const exportando  = ref(false)
-const errores     = ref({})
+const cargando     = ref(false)
+const exportando   = ref(false)
+const errores      = ref({})
 
 async function buscar() {
   errores.value = {}
   if (!medicoId.value) { errores.value.medico = 'Seleccione un profesional'; return }
   if (!fecha.value)    { toast('Seleccione una fecha', 'err'); return }
 
-  estado.value  = 'cargando'
+  estado.value   = 'cargando'
   cargando.value = true
   try {
     citas.value  = await citaService.getByMedicoFecha(medicoId.value, fecha.value)
     estado.value = 'ok'
   } catch (e) {
-    estado.value   = 'error'
+    estado.value       = 'error'
     mensajeError.value = e.message
   } finally {
     cargando.value = false
@@ -162,9 +163,9 @@ async function exportarCSV() {
   try {
     const { blob, filename } = await citaService.exportCsvByMedicoFecha(medicoId.value, fecha.value)
     const finalName = filename || `citas_medico${medicoId.value}_${fecha.value}.csv`
-    const url = URL.createObjectURL(blob)
+    const url  = URL.createObjectURL(blob)
     const link = document.createElement('a')
-    link.href = url
+    link.href     = url
     link.download = finalName
     document.body.appendChild(link)
     link.click()
@@ -197,6 +198,8 @@ defineExpose({ medicoId, fecha, buscar })
   padding: 7px 16px; border-radius: 20px;
   font-size: 13px; font-weight: 600; letter-spacing: .02em;
 }
+
+/* ── Tabla ── */
 .tabla-wrap { overflow-x: auto; border-radius: var(--radio-md); border: 1px solid var(--borde); }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 thead tr { background: var(--verde-claro); }
@@ -204,16 +207,33 @@ thead th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 7
 tbody tr { border-top: 1px solid var(--borde); transition: background var(--trans); }
 tbody tr:hover { background: #F5FBF8; }
 tbody td { padding: 13px 16px; vertical-align: middle; }
-.num  { color: var(--texto-tenue); font-size: 13px; }
-.hora { font-size: 15px; font-family: 'DM Sans', monospace; }
-.mono { font-family: monospace; font-size: 13px; }
-.sm   { font-size: 13px; }
-.tenue{ font-size: 13px; color: var(--texto-suave); }
-.obs  { font-size: 13px; color: var(--texto-suave); max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.num   { color: var(--texto-tenue); font-size: 13px; }
+.hora  { font-size: 15px; font-family: 'DM Sans', monospace; }
+.mono  { font-family: monospace; font-size: 13px; }
+.sm    { font-size: 13px; }
+.tenue { font-size: 13px; color: var(--texto-suave); }
+.obs   { font-size: 13px; color: var(--texto-suave); max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cancelada { font-size: 12px; color: var(--texto-tenue); }
 
+/* ── Empty state ── */
 .empty-state { text-align: center; padding: 56px 24px; }
 .e-icon { width: 56px; height: 56px; margin: 0 auto 16px; background: var(--verde-claro); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .empty-state h3 { font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; margin-bottom: 6px; }
 .empty-state p  { font-size: 14px; color: var(--texto-tenue); max-width: 300px; margin: 0 auto; }
+
+/* ── Botón de búsqueda alineado al fondo de la celda del grid ── */
+.campo-boton {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* ── Responsive ── */
+@media (max-width: 680px) {
+  .sec-header-texto h2 { font-size: 22px; }
+
+  /* En móvil el botón ocupa todo el ancho sin label vacío */
+  .campo-boton label { display: none; }
+  .campo-boton { justify-content: stretch; }
+}
 </style>

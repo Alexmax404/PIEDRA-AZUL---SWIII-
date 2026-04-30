@@ -38,8 +38,8 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
-import AppCampo    from '../atoms/AppCampo.vue'
-import AppButton   from '../atoms/AppButton.vue'
+import AppCampo     from '../atoms/AppCampo.vue'
+import AppButton    from '../atoms/AppButton.vue'
 import DiasSelector from '../molecules/DiasSelector.vue'
 import { medicoService } from '../../services/api.js'
 import { useToast } from '../../composables/useToast.js'
@@ -100,10 +100,12 @@ async function guardar() {
   box-shadow: 0 20px 60px rgba(0,0,0,.20);
   animation: modalIn .22s ease;
 }
+
 @keyframes modalIn {
   from { opacity: 0; transform: scale(.95) translateY(8px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
+
 .modal-header { margin-bottom: 20px; }
 .modal-header h2 {
   font-family: 'DM Serif Display', serif;
@@ -112,5 +114,23 @@ async function guardar() {
   color: var(--verde-oscuro);
 }
 .modal-header p { font-size: 13px; color: var(--texto-tenue); margin-top: 4px; }
-.modal-footer { display: flex; gap: 12px; margin-top: 24px; }
+
+/* ── Footer: botones que se apilan en móvil ── */
+.modal-footer {
+  display: flex;
+  flex-wrap: wrap;          /* ✦ permite que bajen a la siguiente línea */
+  gap: 12px;
+  margin-top: 24px;
+}
+
+@media (max-width: 480px) {
+  .modal { padding: 24px 18px; }
+
+  /* cada botón ocupa el ancho completo */
+  .modal-footer { flex-direction: column; }
+  .modal-footer > * { width: 100%; }
+
+  /* padding del modal-bg más justo */
+  .modal-bg { padding: 16px; }
+}
 </style>

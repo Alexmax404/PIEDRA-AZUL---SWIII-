@@ -16,7 +16,7 @@
       <div class="form-grid">
         <AppCampo label="Número de documento" v-model="busqueda.doc"
                   placeholder="Ej: 1061234567" @enter="buscarPaciente" />
-        <div class="campo" style="flex-direction:row;align-items:flex-end;gap:10px;">
+        <div class="campo campo-botones">
           <AppButton variante="contorno" @click="buscarPaciente" :loading="busqueda.cargando" style="flex:1">
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             Buscar
@@ -231,6 +231,15 @@ function limpiarTodo() {
 .sec-header-texto p  { font-size: 14px; color: var(--texto-tenue); margin-top: 4px; }
 .btn-fila { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
 .campo { display: flex; flex-direction: column; gap: 5px; }
+.campo-botones { flex-direction: row; align-items: flex-end; gap: 10px; }
 .campo.error .msg-error { display: block; }
 .msg-error { font-size: 12px; color: var(--rojo); font-weight: 500; display: none; }
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .sec-header-texto h2 { font-size: 22px; }
+  .btn-fila { flex-direction: column; }
+  .btn-fila > * { width: 100%; }
+  .campo-botones { flex-direction: column; align-items: stretch; }
+  .campo-botones > * { width: 100%; }
+}
 </style>

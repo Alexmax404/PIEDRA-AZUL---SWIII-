@@ -77,6 +77,8 @@ const modelo = computed({
   outline: none;
   appearance: none;
   -webkit-appearance: none;
+  width: 100%;        /* ← esto es lo que falta */
+  min-width: 0;       /* ← evita que el input ignore su contenedor en grid */
 }
 .campo select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234A5550' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");

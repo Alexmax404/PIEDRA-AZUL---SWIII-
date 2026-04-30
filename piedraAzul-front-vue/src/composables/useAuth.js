@@ -12,11 +12,11 @@ const sesionActiva = computed(() => !!usuario.value)
 const esPaciente = computed(() => usuario.value?.rol === 'PACIENTE')
 
 // ── Configuración de Keycloak ─────────────────────────────────────────────
-const KEYCLOAK_URL = 'http://localhost:8180'
-const KEYCLOAK_REALM = 'piedrazul'
-const KEYCLOAK_CLIENT = 'piedrazul-api'
-const KEYCLOAK_SECRET = 'lU5PljMWMfq0sM9rTIJeNFgjvYVHGQDa'  // ← el secret del client en Keycloak
-const API = 'http://localhost:8080/api'
+const KEYCLOAK_URL = import.meta.env.VITE_KEYCLOAK_URL ?? 'http://localhost:8180'
+const KEYCLOAK_REALM = import.meta.env.VITE_KEYCLOAK_REALM ?? 'piedrazul'
+const KEYCLOAK_CLIENT = import.meta.env.VITE_KEYCLOAK_CLIENT ?? 'piedrazul-api'
+const KEYCLOAK_SECRET = import.meta.env.VITE_KEYCLOAK_SECRET ?? 'lU5PljMWMfq0sM9rTIJeNFgjvYVHGQDa'  // ← el secret del client en Keycloak
+const API = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api'
 // ─────────────────────────────────────────────────────────────────────────
 
 export function useAuth() {

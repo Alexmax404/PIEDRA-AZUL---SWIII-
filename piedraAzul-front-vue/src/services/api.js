@@ -6,7 +6,7 @@
 
 import { useAuth } from '../composables/useAuth.js'
 
-const API = 'http://localhost:8080/api'
+const API = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api'
 
 function getToken() {
   const { usuario } = useAuth()

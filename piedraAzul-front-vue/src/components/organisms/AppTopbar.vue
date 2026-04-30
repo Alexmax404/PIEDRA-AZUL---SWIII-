@@ -11,7 +11,7 @@
       </div>
       <div class="topbar-info">
         <h1>Piedrazul</h1>
-        <p>Sistema de agendamiento médico</p>
+        <p class="topbar-subtitulo">Sistema de agendamiento médico</p>
       </div>
     </div>
 
@@ -24,12 +24,12 @@
           <span class="rol-pill">{{ rolLabel }}</span>
         </div>
       </div>
-      <button class="btn-salir" @click="cerrarSesion">
+      <button class="btn-salir" @click="cerrarSesion" :title="'Salir'">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24">
           <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"
                 stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        Salir
+        <span class="btn-salir-texto">Salir</span>
       </button>
     </div>
   </header>
@@ -45,7 +45,7 @@ const { avatarLetra, nombreCompleto, rolLabel, cerrarSesion } = useAuth()
   background: var(--verde-oscuro);
   color: var(--blanco);
   padding: 0 32px;
-  height: 64px;
+  min-height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -60,6 +60,7 @@ const { avatarLetra, nombreCompleto, rolLabel, cerrarSesion } = useAuth()
   display: flex;
   align-items: center;
   gap: 14px;
+  min-width: 0; /* permite que el texto se recorte si es necesario */
 }
 .topbar-logo {
   width: 38px; height: 38px;
@@ -68,12 +69,14 @@ const { avatarLetra, nombreCompleto, rolLabel, cerrarSesion } = useAuth()
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
+.topbar-info { min-width: 0; }
 .topbar-info h1 {
   font-family: 'DM Serif Display', serif;
   font-size: 18px; font-weight: 400;
   line-height: 1.2; letter-spacing: .01em;
+  white-space: nowrap;
 }
-.topbar-info p { font-size: 12px; opacity: .65; font-weight: 300; }
+.topbar-subtitulo { font-size: 12px; opacity: .65; font-weight: 300; }
 
 /* Derecha */
 .topbar-der {
@@ -94,6 +97,7 @@ const { avatarLetra, nombreCompleto, rolLabel, cerrarSesion } = useAuth()
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 14px; font-weight: 700;
+  flex-shrink: 0;
 }
 .topbar-datos {
   display: flex;
@@ -101,7 +105,7 @@ const { avatarLetra, nombreCompleto, rolLabel, cerrarSesion } = useAuth()
   align-items: flex-end;
   gap: 2px;
 }
-.top-nombre { font-size: 13px; font-weight: 500; }
+.top-nombre { font-size: 13px; font-weight: 500; white-space: nowrap; }
 .rol-pill {
   background: rgba(255,255,255,.15);
   border: 1px solid rgba(255,255,255,.25);
@@ -121,11 +125,22 @@ const { avatarLetra, nombreCompleto, rolLabel, cerrarSesion } = useAuth()
   padding: 7px 14px;
   font-size: 13px; font-weight: 500;
   transition: background var(--trans);
+  flex-shrink: 0;
 }
 .btn-salir:hover { background: rgba(255,255,255,.22); }
 
-@media (max-width: 680px) {
-  .topbar { padding: 0 18px; }
-  .topbar-datos { display: none; }
+/* ── Tablet: 481px – 768px ── */
+@media (max-width: 768px) {
+  .topbar { padding: 0 20px; }
+  .topbar-subtitulo { display: none; }       /* oculta el subtítulo */
+  .rol-pill { display: none; }               /* oculta la pastilla de rol */
+}
+
+/* ── Móvil: hasta 480px ── */
+@media (max-width: 480px) {
+  .topbar { padding: 0 14px; gap: 10px; }
+  .topbar-datos { display: none; }           /* oculta nombre + rol */
+  .btn-salir-texto { display: none; }        /* botón solo con ícono */
+  .btn-salir { padding: 7px 10px; }          /* ajusta padding sin texto */
 }
 </style>
